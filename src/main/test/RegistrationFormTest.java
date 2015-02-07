@@ -67,7 +67,7 @@ public class RegistrationFormTest extends Base {
      */
     @Test
     public void testSubscriptionWithoutName(){
-        //
+        //todo finish it
     }
 
     /**
@@ -75,6 +75,6 @@ public class RegistrationFormTest extends Base {
      */
     @Test
     public void testSubscriptionSuccessfully(){
-        //
+    	//todo finish it
     }
 }
