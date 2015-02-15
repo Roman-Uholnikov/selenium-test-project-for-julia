@@ -15,23 +15,19 @@ public class Registration extends HttpServlet {
         String error = "";
         String name = request.getParameter("name");
         String email = request.getParameter("email");
-        Boolean keepposted  = null;
+        boolean keepposted ;
+        boolean validationSuccess;
 
         System.out.println(new java.util.Date() + " registration attempt");
         System.out.println("name: "+ request.getParameter("name"));
         System.out.println("email: "+ request.getParameter("email"));
         System.out.println("keep posted: "+ request.getParameter("keepposted"));
 
-        if(request.getParameter("keepposted")!=null){
-            keepposted = true;
-        }else{
-            keepposted = false;
-        }
+        keepposted =  request.getParameter("keepposted")!=null;
 
-        if(name == null || name.trim().equals("")){
-            error += "name cannot be empty; ";
-        }
-        if(keepposted && ((email==null) | (email.equals("")))){
+        validationSuccess = isNameValide(name, error);
+
+        if(keepposted && ((email==null) || (email.equals("")))){
             error += "if you want to be posted, please, enter your email";
         }
 
@@ -43,6 +39,7 @@ public class Registration extends HttpServlet {
 
         request.setAttribute("name",name);
         request.setAttribute("error",error);
+        request.setAttribute("vadidationSuccess",validationSuccess);
         request.setAttribute("email",email);
         request.setAttribute("keepposted ",keepposted);
     }
@@ -51,5 +48,18 @@ public class Registration extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         validate(req);
 
+        resp.sendError(403);
+    }
+
+    private static Boolean isNameValide(String name, String error){
+        if(name == null || name.trim().equals("")){
+            error.concat("name cannot be empty; ");
+            return false;
+        }
+        if(name.length()<3){
+            error.concat("we hope that your name should be more than 2 symbols; ");
+            return false;
+        }
+        return true;
     }
 }
