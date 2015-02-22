@@ -21,12 +21,12 @@ public class RegistrationFormTest extends Base {
         pause(1);
         //enter name
         getDriver().findElement(By.name("name")).sendKeys("sdf");
-        //enter incorret email
+        //enter incorrect email
         getDriver().findElement(By.xpath("//input[@type='email']")).sendKeys("incorrect email");
         //tick keep posted
         getDriver().findElement(By.name("keepposted")).click();
         //click send
-        getDriver().findElement(By.xpath("//input[@type='submit']")).click();
+        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
         pause(3);
 
         //Checking
@@ -47,20 +47,18 @@ public class RegistrationFormTest extends Base {
         //we DONOT tick keep posted
         //getDriver().findElement(By.name("keepposted")).click();
         //click send
-        getDriver().findElement(By.xpath("//input[@type='submit']")).click();
+        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
 
         //let us give page time for loading
         pause(3);
 
         //Checking
-        //page contain block with success messages
-        assertTrue(getDriver().findElement(By.className("success"))!=null);
         //page contain block with name messages
         assertTrue(getDriver().findElement(By.className("name-success"))!=null);
-
-        //test fail because of this checking.
-        //element "subscription-success" should not be on the page! (change it to ==null)
-        assertTrue(getDriver().findElement(By.className("subscription-success"))!=null);
+        
+        //test fail because of this checking.!!!!
+        //element "subscription-success" should not be on the page! (change it to ==0)
+        assertTrue(getDriver().findElements(By.className("subscription-success")).size()==1);
 
     }
 
