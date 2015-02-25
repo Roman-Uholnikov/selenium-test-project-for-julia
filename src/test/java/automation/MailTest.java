@@ -14,8 +14,10 @@ public class MailTest extends Base {
 	private static String USER_PASSWORD = "enter your password here";
 
     /**
-     * “ест дл€ проверки почтового €щика. “ест не пройдет, в случае если в почтовм €щике есть непрочтенные письма.
-     * ≈сли в почтовом €щике нет новых писем - тест будет успешно пройден.
+     * This your mail inbox for mail.ru
+     * If your inbox is empty - test will success
+     * if you have new unread messages- test will fail.
+     *
      */
     @Test
     public void testSubscriptionWithWrongEmail(){
@@ -28,9 +30,8 @@ public class MailTest extends Base {
         getDriver().findElement(By.className("mailbox__auth__button")).click();
         pause(3);
 
-        //todo sdf
         //Checking
-       
+        //this XPath try grab all elements, that shows unread messages
         assertTrue(getDriver().findElements(By.xpath("//div[@data-id='0']//span[@class='b-nav__item__count']")).size()==0);
     }
 
