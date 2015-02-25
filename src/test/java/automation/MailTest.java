@@ -9,9 +9,12 @@ import static org.junit.Assert.assertTrue;
  * Created by roman on 07.02.15.
  */
 public class MailTest extends Base {
-	
+
+    /* you should enter your credential here */
 	private static String USER_NAME = "enter your login";
 	private static String USER_PASSWORD = "enter your password here";
+
+    public static final String HTTPS_MAIL_RU = "https://mail.ru";
 
     /**
      * This your mail inbox for mail.ru
@@ -21,8 +24,8 @@ public class MailTest extends Base {
      */
     @Test
     public void testSubscriptionWithWrongEmail(){
-        String formUrl = "https://mail.ru";
-        getDriver().get(formUrl);
+        String url = HTTPS_MAIL_RU;
+        getDriver().get(url);
         pause(3);
         getDriver().findElement(By.name("Login")).sendKeys(USER_NAME);
         getDriver().findElement(By.name("Password")).sendKeys(USER_PASSWORD);        
