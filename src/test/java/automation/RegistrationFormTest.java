@@ -58,7 +58,7 @@ public class RegistrationFormTest extends Base {
         
         //test fail because of this checking.!!!!
         //element "subscription-success" should not be on the page! (change it to ==0)
-        assertTrue(getDriver().findElements(By.className("subscription-success")).size()==1);
+        assertTrue(getDriver().findElements(By.className("subscription-success")).size()==0);
 
     }
 
@@ -67,14 +67,62 @@ public class RegistrationFormTest extends Base {
      */
     @Test
     public void testSubscriptionWithoutName(){
-        //todo finish it
+    	
+    	String formUrl = "http://localhost:8080/MyWebApp/form.jsp";
+        //open url
+        getDriver().get(formUrl);
+        pause(1);
+       
+        //enter name
+        getDriver().findElement(By.name("name")).sendKeys(" ");
+       
+        //enter email
+        getDriver().findElement(By.xpath("//input[@type='email']")).sendKeys("aaa@aa");
+       
+        //tick keep posted
+        getDriver().findElement(By.name("keepposted")).click();
+        
+        //click send
+        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
+        pause(3);
+
+        //Checking
+        //page url did not changed
+        assertTrue(getDriver().findElement(By.xpath("//div[@role='alert']"))!=null);
+    
+        
     }
+    	
+    	
 
     /**
      * Tests subscription successfully
      */
     @Test
     public void testSubscriptionSuccessfully(){
-    	//todo finish it
+    	String formUrl = "http://localhost:8080/MyWebApp/form.jsp";
+        //open url
+        getDriver().get(formUrl);
+        pause(1);
+       
+        //enter email
+        getDriver().findElement(By.xpath("//input[@type='email']")).sendKeys("aaa@aa");
+        
+        //enter name
+        getDriver().findElement(By.name("name")).sendKeys("name");
+       
+             
+        //tick keep posted
+        getDriver().findElement(By.name("keepposted")).click();
+        
+        //click send
+        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
+        pause(3);
+
+        //Checking
+        assertTrue(getDriver().findElement(By.className("name-success"))!=null);
+        assertTrue(getDriver().findElement(By.xpath("//p[@class='name-success']/b/i")).getText().equals("name"));
+        assertTrue(getDriver().findElement(By.className("subscription-success"))!=null);
+        assertTrue(getDriver().findElement(By.xpath("//p[@class='subscription-success']/i/b")).getText().equals("aaa@aa"));
     }
 }
