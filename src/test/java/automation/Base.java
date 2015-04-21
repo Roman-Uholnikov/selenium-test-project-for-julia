@@ -2,7 +2,11 @@ package automation;
 
 import org.junit.After;
 import org.junit.Before;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
@@ -49,5 +53,23 @@ public class Base {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * @param locator locator
+     */
+    public void scrollDownToElement(By locator) {
+        WebElement element = getElementByLocator(locator);
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+
+    public WebElement getElementByLocator(By locator) {
+        WebElement element = null;
+        try {
+            element = getDriver().findElement(locator);
+        } catch (NoSuchElementException e) {
+            System.out.println("Element not found. Locator: " + locator);
+        }
+        return element;
     }
 }
