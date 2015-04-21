@@ -37,6 +37,7 @@ public class DouTest extends Base {
 
         List<WebElement> companiesWebElements = getDriver().findElements(By.xpath("//div[@class='company']"));
 
+        //todo after coming back here is not list anymore
         for (WebElement companyWebElement : companiesWebElements) {
             DouCompany company = getDouCompany(companyWebElement);
             listOfCompanies.add(company);
