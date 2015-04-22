@@ -63,9 +63,9 @@ public class DouCompany {
     @Override
     public String toString() {
         return  name + ": \n" +
-                "    city ='" + city + "\n" +
-                "    email ='" + emails + "\n" +
-                "    phoneNumbers ='" + phoneNumbers + "\n" +
-                "    adress ='" + emails + "\n\n";
+                "    city = " + city + "\n" +
+                "    email = " + emails + "\n" +
+                "    adress = " + adresses + "\n" +
+                "    phoneNumbers = " + phoneNumbers + "\n\n";
     }
 }

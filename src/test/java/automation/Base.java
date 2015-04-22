@@ -72,4 +72,14 @@ public class Base {
         }
         return element;
     }
+
+    public WebDriver getNewDriver(){
+        WebDriver driver = new FirefoxDriver();
+        WebDriver.Options options = driver.manage();
+        WebDriver.Window window = options.window();
+
+        // Make sure all elements are visible.
+        window.maximize();
+        return driver;
+    }
 }
