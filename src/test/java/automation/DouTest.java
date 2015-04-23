@@ -25,8 +25,8 @@ public class DouTest extends Base {
             "\n\n" +
             "With kind regards,\n" +
             "Julia Loboda";
-    private static final String USER_NAME = "111";
-    private static final String USER_PASSWORD = "111";
+    private static final String USER_NAME = "11";
+    private static final String USER_PASSWORD = "11";
 
     /**
      * This method should search through all companies in dou and get their information (names and emails).
@@ -39,7 +39,7 @@ public class DouTest extends Base {
         getDriver().get(DOU_UA_COMPANIES);
         /* unwrap as much as possible pages*/
         for (int i = 0; i < HOW_MUCH_PAGE_DIAL_WITH; i++) {
-            pause("//div[@class='more-btn']/a", 5);
+            pause(2);
             if (getDriver().findElements(By.xpath("//div[@class='more-btn']/a")).size() > 0) {
                 scrollDownToElement(By.xpath("//div[@class='more-btn']/a"));
                 getDriver().findElement(By.xpath("//div[@class='more-btn']/a")).click();
@@ -56,15 +56,15 @@ public class DouTest extends Base {
 //        for(int i=0; i<3; i++){ WebElement companyWebElement = companiesWebElements.get(i); debuging version
         for (WebElement companyWebElement : companiesWebElements) {
             DouCompany company = getDouCompany(companyWebElement);
-            if(company.getEmails().size() > 0){
+            if (company.getEmails().size() > 0) {
                 listOfCompanies.add(company);
                 System.out.println(listOfCompanies.size() + " " + company.toString());
             }
         }
 
         /* sending emails */
-        for(DouCompany company: listOfCompanies){
-            for(String email:company.getEmails()){
+        for (DouCompany company : listOfCompanies) {
+            for (String email : company.getEmails()) {
                 sendEmails(email, EMAIL_SUBJECT, MESSAGE_TEXT, ATTACHET_FILE_NAME);
             }
         }
@@ -105,45 +105,50 @@ public class DouTest extends Base {
 
         if (getDriver().findElements(By.xpath("//span[@class='city'  and  contains(.,'Ки')]")).size() > 0) {
 
+            pause(2);
             DouCompany company = new DouCompany();
-            company.setName(webElement.findElement(By.className("cn-a")).getText());
-            company.setCity(webElement.findElement(By.className("city")).getText());
+            if (webElement.findElements(By.className("cn-a")).size() > 0 &&
+                    webElement.findElements(By.className("city")).size() > 0) {
+                company.setName(webElement.findElement(By.className("cn-a")).getText());
+                company.setCity(webElement.findElement(By.className("city")).getText());
 
-            String link = webElement.findElement(By.className("cn-a")).getAttribute("href") + "offices/";
+                String link = webElement.findElement(By.className("cn-a")).getAttribute("href") + "offices/";
 
-            WebDriver driver1 = getNewDriver();
-            driver1.get(link);
+                WebDriver driver1 = getNewDriver();
+                driver1.get(link);
 
 
-            pause(1);
-            List<WebElement> addressesWebElementList = driver1.findElements(By.xpath("//div[@class='table' and preceding-sibling::h4[contains(.,'Ки')]]//div[@class='contacts']/div[@class='address']"));
-            List<WebElement> mailWebElementList = driver1.findElements(By.xpath("//div[@class='table' and preceding-sibling::h4[contains(.,'Ки')]]//div[@class='contacts']/div[@class='mail']/a"));
-            List<WebElement> phonesWebElementList = driver1.findElements(By.xpath("//div[@class='table' and preceding-sibling::h4[contains(.,'Ки')]]//div[@class='contacts']/div[@class='phones']"));
+                pause(1);
+                List<WebElement> addressesWebElementList = driver1.findElements(By.xpath("//div[@class='table' and preceding-sibling::h4[contains(.,'Ки')]]//div[@class='contacts']/div[@class='address']"));
+                List<WebElement> mailWebElementList = driver1.findElements(By.xpath("//div[@class='table' and preceding-sibling::h4[contains(.,'Ки')]]//div[@class='contacts']/div[@class='mail']/a"));
+                List<WebElement> phonesWebElementList = driver1.findElements(By.xpath("//div[@class='table' and preceding-sibling::h4[contains(.,'Ки')]]//div[@class='contacts']/div[@class='phones']"));
 
-            for (WebElement addressWeb : addressesWebElementList) {
-                String address = addressWeb.getText();
-                if (address != null & !address.equalsIgnoreCase("")) {
-                    company.getAdresses().add(address);
+                for (WebElement addressWeb : addressesWebElementList) {
+                    String address = addressWeb.getText();
+                    if (address != null & !address.equalsIgnoreCase("")) {
+                        company.getAdresses().add(address);
+                    }
                 }
-            }
-            for (WebElement mailWeb : mailWebElementList) {
-                String mail = mailWeb.getText();
-                if (mail != null & !mail.equalsIgnoreCase("")) {
-                    company.getEmails().add(mail);
+                for (WebElement mailWeb : mailWebElementList) {
+                    String mail = mailWeb.getText();
+                    if (mail != null & !mail.equalsIgnoreCase("")) {
+                        company.getEmails().add(mail);
+                    }
                 }
-            }
 
-            for (WebElement phoneWeb : phonesWebElementList) {
-                String phone = phoneWeb.getText();
-                if (phone != null & !phone.equalsIgnoreCase("")) {
-                    company.getPhoneNumbers().add(phone);
+                for (WebElement phoneWeb : phonesWebElementList) {
+                    String phone = phoneWeb.getText();
+                    if (phone != null & !phone.equalsIgnoreCase("")) {
+                        company.getPhoneNumbers().add(phone);
+                    }
                 }
-            }
 
-            driver1.quit();
-            return company;
+                driver1.quit();
+                return company;
+            }
         } else {
             return null;
         }
+        return null;
     }
 }
