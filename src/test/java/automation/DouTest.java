@@ -1,7 +1,10 @@
 package automation;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -25,8 +28,31 @@ public class DouTest extends Base {
             "\n\n" +
             "With kind regards,\n" +
             "Julia Loboda";
-    private static final String USER_NAME = "11";
-    private static final String USER_PASSWORD = "11";
+    private static final String USER_NAME = "111"; //todo change it
+    private static final String USER_PASSWORD = "111";//todo change it
+
+    private static final String EMAILS =
+            "\n" +
+            "80 Grossum: \n" +
+            "    city = Киев\n" +
+            "    email = [info@grossum.com]\n" +
+            "    adress = [Шота Руставели 16 (показать на карте)]\n" +
+            "    phoneNumbers = []\n" +
+            "\n";
+    public static final String EMAIL_REG_EXP = "([A-Za-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4})";
+
+
+    @Test
+    public void sendRestOfTheEmails(){
+        String regex = EMAIL_REG_EXP;
+        Pattern pAll = Pattern.compile(regex);
+        Pattern p = Pattern.compile(regex);
+        Matcher matcher = p.matcher(EMAILS);
+        while (matcher.find()) {
+            sendEmails(matcher.group(),EMAIL_SUBJECT, MESSAGE_TEXT, ATTACHET_FILE_NAME);
+        }
+    }
+
 
     /**
      * This method should search through all companies in dou and get their information (names and emails).
@@ -56,7 +82,7 @@ public class DouTest extends Base {
 //        for(int i=0; i<3; i++){ WebElement companyWebElement = companiesWebElements.get(i); debuging version
         for (WebElement companyWebElement : companiesWebElements) {
             DouCompany company = getDouCompany(companyWebElement);
-            if (company.getEmails().size() > 0) {
+            if (company!= null && company.getEmails().size() > 0) {
                 listOfCompanies.add(company);
                 System.out.println(listOfCompanies.size() + " " + company.toString());
             }
@@ -83,6 +109,7 @@ public class DouTest extends Base {
             pause(5);
         }
 
+        pause(2);
         webDriverforEmail.findElement(By.xpath(".//*[@id='compose__header__content']/div[2]/div[2]/div[1]/textarea")).sendKeys(emailReveiver);
 
         webDriverforEmail.findElement(By.xpath("//input[@name='Subject']")).sendKeys(title);
@@ -93,7 +120,6 @@ public class DouTest extends Base {
         webDriverforEmail.findElement(By.xpath("//div[@class='popup__controls']/button[@type='submit']/span[contains(.,'Прикрепить')]")).click();
 
 
-//        webDriverforEmail.findElement(By.id("compose_276_composeEditor_ifr")).sendKeys(MESSAGE_TEXT);
         enterTextToIFrame("//tr[@class='mceFirst mceLast']//iframe", MESSAGE_TEXT, getDriverForEmail());
 
         webDriverforEmail.findElement(By.xpath("(//div[@data-name='send'])[1]")).click();
